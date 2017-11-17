@@ -1,0 +1,20 @@
+#spring:
+#  application:
+#    name: spider4j
+#  datasource:
+#    url: jdbc:mysql://101.132.229.69:3306/spingboot?useUnicode=true&useSSL=false&characterEncoding=utf-8
+#   data-username: root
+#   data-password: Xzcd1993
+server:
+  port: 8088
+spring:
+  application:
+    name: spider4j
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://101.132.229.69:3306/springboot?useUnicode=true&useSSL=false&characterEncoding=utf-8
+    username: root
+    password: Xzcd1993
+mybatis:
+  type-aliases-package: com.xu.spider4j.entity
+
