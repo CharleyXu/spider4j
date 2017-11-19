@@ -76,6 +76,9 @@ public class MusicMapperTest {
 		Comment comment2 = new Comment();
 		comment2.setCommentId("30001");
 		comment2.setContent("3二次更新");
+
+		comments.add(comment);
+		comments.add(comment2);
 		commentMapper.batchUpdate(comments);
 		System.out.println("测试成功");
 	}

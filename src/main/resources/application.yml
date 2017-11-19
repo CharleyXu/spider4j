@@ -15,6 +15,10 @@ spring:
     url: jdbc:mysql://101.132.229.69:3306/springboot?useUnicode=true&useSSL=false&characterEncoding=utf-8
     username: root
     password: Xzcd1993
+  data:
+    mongodb:
+      uri: mongodb://101.200.44.47:27017
+      database: springboot
 mybatis:
   type-aliases-package: com.xu.spider4j.entity
 
