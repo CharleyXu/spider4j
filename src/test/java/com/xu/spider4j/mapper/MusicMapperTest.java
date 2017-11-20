@@ -2,16 +2,19 @@ package com.xu.spider4j.mapper;
 
 import com.xu.spider4j.entity.Comment;
 import com.xu.spider4j.entity.Music;
-
-import org.apache.ibatis.annotations.Param;
+import com.xu.spider4j.util.DateUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -22,7 +25,7 @@ public class MusicMapperTest {
 	@Autowired
 	private CommentMapper commentMapper;
 	@Test
-	public void selectMusic(){
+	public void insertMusic(){
 		Music music = new Music();
 		music.setSongId("1234");
 		music.setName("测试");
@@ -33,28 +36,35 @@ public class MusicMapperTest {
 	}
 
 	@Test
-	public void selectComment(){
+	@Transactional
+	@Rollback(true)// 事务自动回滚，默认是true。可以不写
+	/**
+	 * junit单元测试时,插入成功后会回滚
+	 * 数据库主键会继续自增
+	 * Rolled back transaction after test execution for test context......
+	 */
+	public void batchInsert(){
 		Comment comment = new Comment();
-		comment.setCommentId("40001");
-		comment.setContent("测试内容4");
-		comment.setLinkedCount(4000);
-		comment.setSongId("songId4");
-		comment.setNickname("测试昵称4");
-		comment.setTime("2017-11-17");
+		comment.setCommentId("70001");
+		comment.setContent("测试内容7");
+		comment.setLinkedCount(7000);
+		comment.setSongId("songId7");
+		comment.setNickname("测试昵称7");
+		comment.setTime(DateUtil.dateToString(new Date(),DateUtil.YYYYMMDD));
 		Comment comment2 = new Comment();
-		comment2.setCommentId("50001");
-		comment2.setContent("测试内容5");
-		comment2.setLinkedCount(5000);
-		comment2.setSongId("songId5");
-		comment2.setNickname("测试昵称5");
-		comment2.setTime("2017-11-17");
+		comment2.setCommentId("80001");
+		comment2.setContent("测试内容8");
+		comment2.setLinkedCount(8000);
+		comment2.setSongId("songId8");
+		comment2.setNickname("测试昵称8");
+		comment2.setTime(DateUtil.dateToString(new Date(),DateUtil.YYYYMMDD));
 		List<Comment> list = new ArrayList<>();
 		list.add(comment);
 		list.add(comment2);
 		System.out.println("list size:"+list.size());
 //		commentMapper.insert(comment);
 		commentMapper.batchInsert(list);
-		Assert.assertEquals(5,commentMapper.findAll().size());
+		Assert.assertEquals(7,commentMapper.findAll().size());
 		System.out.println("测试成功");
 	}
 
@@ -81,6 +91,19 @@ public class MusicMapperTest {
 		comments.add(comment2);
 		commentMapper.batchUpdate(comments);
 		System.out.println("测试成功");
+	}
+
+	@Test
+	@Transactional
+	public void batchSelect(){
+		String[] strings = {"70001", "80001"};
+		List<String> list = Arrays.asList(strings);
+		String[] strings1 = list.toArray(new String[strings.length]);
+		System.out.println("strings1:"+Arrays.toString(strings1));
+		List<Comment> comments = commentMapper.batchSelect(list);
+		System.out.println("comments:"+comments);
+		commentMapper.batchDelete(list);
+		Assert.assertEquals(5,commentMapper.findAll().size());
 	}
 
 }

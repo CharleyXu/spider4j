@@ -1,11 +1,7 @@
 package com.xu.spider4j.mapper;
 
-import com.google.common.base.Strings;
 import com.xu.spider4j.entity.Comment;
-
-import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.jdbc.SQL;
-
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
@@ -16,100 +12,120 @@ import java.util.Map;
 public class CommentMapperProvider {
 
 
-  public String findAll() {
-    return new SQL() {
-      {
-        SELECT("*");
-        FROM("comment");
-      }
-    }.toString();
-  }
+	public String findAll() {
+		return new SQL() {
+			{
+				SELECT("*");
+				FROM("comment");
+			}
+		}.toString();
+	}
+
+	public String batchSelect(Map<String, Object> map) {
+		StringBuilder sb = new StringBuilder();
+		List<String> params = (List<String>) map.get("params");
+		sb.append("SELECT * from comment where commentId in ");
+		sb.append("(");
+		for (int i = 0; i < params.size(); i++) {
+			sb.append(params.get(i));
+			if (i < params.size() - 1) {
+				sb.append(",");
+			}
+		}
+		sb.append(")");
+		return sb.toString();
+	}
 
 
+	public String batchInsert(Map<String, Object> map) {
+		List<Comment> comments = (List<Comment>) map.get("list");
+		StringBuilder sb = new StringBuilder();
+		sb.append("INSERT INTO comment ");
+		sb.append("(commentId,songId,nickname,linkedCount,content,time) ");
+		sb.append("VALUES ");
+		MessageFormat mf = new MessageFormat(
+				"(#'{'list[{0}].commentId},#'{'list[{0}].songId},#'{'list[{0}].nickname},#'{'list[{0}].linkedCount},#'{'list[{0}].content},#'{'list[{0}].time})");
+		for (int i = 0; i < comments.size(); i++) {
+			sb.append(mf.format(new Object[]{i}));
+			if (i < comments.size() - 1) {
+				sb.append(",");
+			}
+		}
+		System.out.println(sb.toString());
+		return sb.toString();
+	}
 
+	public String batchUpdate(Map<String, Object> map) {
+		List<Comment> comments = (List<Comment>) map.get("list");
+		StringBuilder sb = new StringBuilder();
+		sb.append("update comment ");
+		sb.append("set content=case ");
+		MessageFormat mfCron = new MessageFormat("#'{'list[{0}].content'}'");
+		for (int i = 0; i < comments.size(); i++) {
+			sb.append("when (commentId=");
+			sb.append(comments.get(i).getCommentId());
+			sb.append(")");
+			sb.append(" then ");
+			sb.append(mfCron.format(new Object[]{i}));
+		}
+		sb.append("end ");
+		sb.append("where commentId in");
+		sb.append("(");
+		for (int i = 0; i < comments.size(); i++) {
+			sb.append(comments.get(i).getCommentId());
+			if (i < comments.size() - 1) {
+				sb.append(",");
+			}
+		}
+		sb.append(")");
+		System.out.println(sb.toString());
+		return sb.toString();
+	}
 
-  public String batchInsert(Map<String, Object> map) {
-    List<Comment> comments = (List<Comment>) map.get("list");
-    StringBuilder sb = new StringBuilder();
-    sb.append("INSERT INTO comment ");
-    sb.append("(commentId,songId,nickname,linkedCount,content,time) ");
-    sb.append("VALUES ");
-    MessageFormat mf = new MessageFormat(
-        "(#'{'list[{0}].commentId},#'{'list[{0}].songId},#'{'list[{0}].nickname},#'{'list[{0}].linkedCount},#'{'list[{0}].content},#'{'list[{0}].time})");
-    for (int i = 0; i < comments.size(); i++) {
-      sb.append(mf.format(new Object[]{i}));
-      if (i < comments.size() - 1) {
-        sb.append(",");
-      }
-    }
-    System.out.println(sb.toString());
-    return sb.toString();
-  }
+	public String batchDelete(Map<String, Object> map) {
+		StringBuilder sb = new StringBuilder();
+		List<String> params = (List<String>) map.get("params");
+		sb.append(" delete from comment where commentId in  ");
+		sb.append("(");
+		for (int i = 0; i < params.size(); i++) {
+			sb.append(params.get(i));
+			if (i < params.size() - 1) {
+				sb.append(",");
+			}
+		}
+		sb.append(")");
+		System.out.println(sb.toString());
+		return sb.toString();
+	}
 
-  public String batchUpdate(Map<String, Object> map) {
-    List<Comment> comments = (List<Comment>) map.get("list");
-    SQL sql = new SQL();
-    if (null != comments) {
-      sql.UPDATE("comment");
+	/**
+	 *
+	 *
+	 public String insertBlog(Map<String,Object> para){
 
-    }
-    StringBuilder sb = new StringBuilder();
-    sb.append("update comment ");
-    sb.append("set content=case ");
-    MessageFormat mfCron = new MessageFormat("#'{'list[{0}].content'}'");
-    for (int i = 0; i < comments.size(); i++) {
-      sb.append("when (commentId=");
-      sb.append(comments.get(i).getCommentId());
-      sb.append(")");
-      sb.append(" then ");
-      sb.append(mfCron.format(new Object[]{i}));
-    }
-    sb.append("end ");
-    sb.append("where commentId in");
-    sb.append("(");
-    for (int i = 0; i < comments.size(); i++) {
-      sb.append(comments.get(i).getCommentId());
-      if (i < comments.size() - 1) {
-        sb.append(",");
-      }
-    }
-    sb.append(")");
-    System.out.println(sb.toString());
-    return sb.toString();
-  }
+	 Blog blog = (Blog)para.get("bean"); //
 
-  public String batchDelete(Map<String, Object> map) {
-    return null;
-  }
+	 SQL sql = new SQL(); //SQL语句对象，所在包：org.apache.ibatis.jdbc.SQL
 
-  /**
-   *
-   *
-   public String insertBlog(Map<String,Object> para){
+	 sql.INSERT_INTO("blog");
 
-   Blog blog = (Blog)para.get("bean"); //
+	 if(blog.getBlogId() != null){ //判断blogId属性是否有值
+	 sql.VALUES("blogId", blog.getBlogId());
+	 }
 
-   SQL sql = new SQL(); //SQL语句对象，所在包：org.apache.ibatis.jdbc.SQL
+	 if(blog.getTitle() != null){//判断title属性是否有值
+	 sql.VALUES("title", blog.getTitle());
+	 }
 
-   sql.INSERT_INTO("blog");
+	 if(blog.getAuthor() != null){//判断author属性是否有值
+	 sql.VALUES("author", blog.getAuthor());
+	 }
 
-   if(blog.getBlogId() != null){ //判断blogId属性是否有值
-   sql.VALUES("blogId", blog.getBlogId());
-   }
-
-   if(blog.getTitle() != null){//判断title属性是否有值
-   sql.VALUES("title", blog.getTitle());
-   }
-
-   if(blog.getAuthor() != null){//判断author属性是否有值
-   sql.VALUES("author", blog.getAuthor());
-   }
-
-   return sql.toString();
-   }
-   *
-   *
-   */
+	 return sql.toString();
+	 }
+	 *
+	 *
+	 */
 
 
 }

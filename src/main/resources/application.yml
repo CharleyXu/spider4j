@@ -6,7 +6,7 @@
 #   data-username: root
 #   data-password: Xzcd1993
 server:
-  port: 8088
+  port: 8089
 spring:
   application:
     name: spider4j
@@ -22,3 +22,8 @@ spring:
 mybatis:
   type-aliases-package: com.xu.spider4j.entity
 
+
+#测试数据
+myconfig:
+  testId: 123
+  testName: charlie

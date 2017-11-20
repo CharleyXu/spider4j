@@ -25,9 +25,18 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-public class NetEaseMusicUtils {
-	public static String crawlAjaxUrl(String songId, int offset) {
+/**
+ * 解密工具类
+ */
+public class NetEaseMusicUtil {
 
+	/**
+	 * 	对AJAX数据进行单独请求
+	 * @param songId
+	 * @param offset
+	 * @return
+	 */
+	public static String crawlAjaxUrl(String songId, int offset) {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		CloseableHttpResponse response = null;
 		String first_param = "{rid:\"\", offset:\"offset_param\", total:\"true\", limit:\"20\", csrf_token:\"\"}";
@@ -39,13 +48,11 @@ public class NetEaseMusicUtils {
 			// String secKey = new BigInteger(100, new SecureRandom()).toString(32).substring(0, 16);
 			String secKey = "FFFFFFFFFFFFFFFF";
 			// 两遍ASE加密
-			String encText = NetEaseMusicUtils.aesEncrypt(aesEncrypt(first_param, "0CoJUm6Qyw8W8jud"), secKey);
+			String encText = NetEaseMusicUtil.aesEncrypt(aesEncrypt(first_param, "0CoJUm6Qyw8W8jud"), secKey);
 			//
 			String encSecKey = rsaEncrypt();
-
 			HttpPost httpPost = new HttpPost("http://music.163.com/weapi/v1/resource/comments/R_SO_4_" + songId + "/?csrf_token=");
 			httpPost.addHeader("Referer", NetEaseMusicPageProcessor.BASE_URL);
-
 			List<NameValuePair> ls = new ArrayList<NameValuePair>();
 			ls.add(new BasicNameValuePair("params", encText));
 			ls.add(new BasicNameValuePair("encSecKey", encSecKey));
@@ -59,7 +66,6 @@ public class NetEaseMusicUtils {
 			if (entity != null) {
 				return EntityUtils.toString(entity, "utf-8");
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -70,21 +76,19 @@ public class NetEaseMusicUtils {
 				e.printStackTrace();
 			}
 		}
-
 		return "";
 	}
 
 	/**
 	 * ASE-128-CBC加密模式可以需要16位
-	 *
-	 * @param src 加密内容
-	 * @param key 密钥
+	 * @param src	加密内容
+	 * @param key	密钥
 	 * @return
+	 * @throws Exception
 	 */
 	public static String aesEncrypt(String src, String key) throws Exception {
 		String encodingFormat = "UTF-8";
 		String iv = "0102030405060708";
-
 		Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 		byte[] raw = key.getBytes();
 		SecretKeySpec secretKeySpec = new SecretKeySpec(raw, "AES");
@@ -128,13 +132,9 @@ public class NetEaseMusicUtils {
 								+ (yushu_day / (1000 * 60 * 60)) + "时"
 								+ (yushu_hour / (1000 * 60)) + "分"
 								+ (yushu_minute / 1000) + "秒";
-
 					}
-
 				}
-
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -143,7 +143,7 @@ public class NetEaseMusicUtils {
 
 	/*
 	 * 将时间戳转换为时间
-	 */
+     */
 	public static String stampToDate(long s) {
 		String res;
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -156,7 +156,6 @@ public class NetEaseMusicUtils {
 	/**
 	 * 将emoji表情替换成*
 	 *
-	 * @param source
 	 * @return 过滤后的字符串
 	 */
 	public static String filterEmoji(String source) {
@@ -166,4 +165,5 @@ public class NetEaseMusicUtils {
 			return source;
 		}
 	}
+
 }

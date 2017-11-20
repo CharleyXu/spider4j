@@ -57,7 +57,7 @@ class TestThread implements Runnable {
     try {
       System.out.println("线程" + id + "正在执行...线程Id: "+Thread.currentThread().getId());
       cyclicBarrier.await();
-      // System.out.println("线程" + id + "继续执行...");
+      System.out.println("线程" + id + "继续执行...线程Id: "+Thread.currentThread().getId());
     } catch (InterruptedException e) {
       e.printStackTrace();
     } catch (BrokenBarrierException e) {

@@ -1,11 +1,5 @@
 package com.xu.spider4j.service;
 
-import org.springframework.amqp.core.AmqpTemplate;
-import org.springframework.amqp.rabbit.annotation.RabbitHandler;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 /**
  * 创建消息消费者Receiver
  * 通过@RabbitListener注解定义该类对hello队列的监听
@@ -14,11 +8,11 @@ import org.springframework.stereotype.Component;
 //@Component
 //@RabbitListener(queues = "hello")
 public class Receiver {
-	@Autowired
-	private AmqpTemplate amqpTemplate;
-	//@RabbitHandler注解来指定对消息的处理方法
-	@RabbitHandler
-	public void  process(String hello){
-		System.out.println("Receiver : " + hello);
-	}
+//	@Autowired
+//	private AmqpTemplate amqpTemplate;
+//	//@RabbitHandler注解来指定对消息的处理方法
+//	@RabbitHandler
+//	public void  process(String hello){
+//		System.out.println("Receiver : " + hello);
+//	}
 }

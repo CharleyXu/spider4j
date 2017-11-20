@@ -1,5 +1,7 @@
 package com.xu.spider4j.entity;
 
+import com.alibaba.fastjson.JSON;
+
 /**
  * Music实体类
  */
@@ -48,5 +50,10 @@ public class Music {
 
 	public void setAlbum(String album) {
 		this.album = album;
+	}
+
+	@Override
+	public String toString() {
+		return JSON.toJSONString(this);
 	}
 }

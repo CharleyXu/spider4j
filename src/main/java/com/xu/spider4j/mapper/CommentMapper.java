@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.UpdateProvider;
 import org.springframework.stereotype.Component;
@@ -30,6 +31,14 @@ public interface CommentMapper {
 	 */
 	@Select("select * from comment where songId = #{songId}")
 	Comment findOne(@Param("songId") String songId);
+
+	/**
+	 * 批量查询
+	 * @param params
+	 * @return
+	 */
+	@SelectProvider(type = CommentMapperProvider.class,method = "batchSelect")
+	List<Comment> batchSelect(@Param("params") List<String> params);
 
 	/**
 	 * 查询数量
@@ -76,10 +85,10 @@ public interface CommentMapper {
 
 	/**
 	 * 批量删除
-	 * @param comments
+	 * @param params
 	 */
 	@DeleteProvider(type = CommentMapperProvider.class,method = "batchDelete")
-	void batchDelete(@Param("comments") List<Comment> comments);
+	void batchDelete(@Param("params") List<String> params);
 	/**
 	 *
 	 *

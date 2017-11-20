@@ -67,4 +67,17 @@ public class Comment {
 	public void setTime(String time) {
 		this.time = time;
 	}
+
+	@Override
+	public String toString() {
+		return "Comment{" +
+				"id=" + id +
+				", commentId='" + commentId + '\'' +
+				", songId='" + songId + '\'' +
+				", nickname='" + nickname + '\'' +
+				", linkedCount=" + linkedCount +
+				", content='" + content + '\'' +
+				", time='" + time + '\'' +
+				'}';
+	}
 }
