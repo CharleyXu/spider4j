@@ -16,10 +16,10 @@ public interface RelationArtlistMusicMapper {
 
 	/**
 	 * 单个插入
-	 * @param artlistMusicRelated
+	 * @param relationArtlistMusic
 	 */
 	@Insert("INSERT INTO relation_artlist_music(artlistId,musicId) value (#{artlistId},#{musicId})")
-	void insert(RelationArtlistMusic artlistMusicRelated);
+	void insert(RelationArtlistMusic relationArtlistMusic);
 
 
 	/**

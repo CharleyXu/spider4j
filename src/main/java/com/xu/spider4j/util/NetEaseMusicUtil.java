@@ -1,7 +1,7 @@
 package com.xu.spider4j.util;
 
-import com.xu.spider4j.processor.NetEaseMusicPageProcessor;
 
+import com.xu.spider4j.processor.NetEaseCloudMusicPageProcessor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
@@ -52,7 +52,7 @@ public class NetEaseMusicUtil {
 			//
 			String encSecKey = rsaEncrypt();
 			HttpPost httpPost = new HttpPost("http://music.163.com/weapi/v1/resource/comments/R_SO_4_" + songId + "/?csrf_token=");
-			httpPost.addHeader("Referer", NetEaseMusicPageProcessor.BASE_URL);
+			httpPost.addHeader("Referer", NetEaseCloudMusicPageProcessor.BASE_URL);
 			List<NameValuePair> ls = new ArrayList<NameValuePair>();
 			ls.add(new BasicNameValuePair("params", encText));
 			ls.add(new BasicNameValuePair("encSecKey", encSecKey));

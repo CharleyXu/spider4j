@@ -68,6 +68,6 @@ public class NetEaseCloudMusicPipeline implements Pipeline{
 		}
 		//		artistMapper.batchInsert(artist);
 		//		musicMapper.batchInsert(musicList);
-
+		//		relationArtlistMusicMapper.batchInsert(relationArtlistMusicList);
 	}
 }

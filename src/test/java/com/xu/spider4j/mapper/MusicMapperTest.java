@@ -31,7 +31,6 @@ public class MusicMapperTest {
 		Music music = new Music();
 		music.setId(3023);
 		music.setName("测试名称");
-		music.setArtistsId("11679,9524");
 		music.setAlbum("测试专辑");
 		music.setCommentThreadId("R_SO_4_35599542");
 		music.setScore(100);
