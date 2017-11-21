@@ -1,31 +1,24 @@
 package com.xu.spider4j.entity;
 
+import com.alibaba.fastjson.JSON;
+
 /**
  * 评论实体类
  */
 public class Comment {
-	private int	id;
-	private String commentId;//评论Id
+	private String id;//评论Id
 	private String	songId;//歌曲Id
 	private String	nickname;//用户昵称
 	private Integer	linkedCount;//点赞数
 	private String	content;//内容
 	private String time;//时间
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
-	}
-
-	public String getCommentId() {
-		return commentId;
-	}
-
-	public void setCommentId(String commentId) {
-		this.commentId = commentId;
 	}
 
 	public String getSongId() {
@@ -70,14 +63,6 @@ public class Comment {
 
 	@Override
 	public String toString() {
-		return "Comment{" +
-				"id=" + id +
-				", commentId='" + commentId + '\'' +
-				", songId='" + songId + '\'' +
-				", nickname='" + nickname + '\'' +
-				", linkedCount=" + linkedCount +
-				", content='" + content + '\'' +
-				", time='" + time + '\'' +
-				'}';
+		return JSON.toJSONString(this);
 	}
 }

@@ -37,7 +37,7 @@ public interface CommentMapper {
 	 * @param params
 	 * @return
 	 */
-	@SelectProvider(type = CommentMapperProvider.class,method = "batchSelect")
+	@SelectProvider(type = CommentProvider.class,method = "batchSelect")
 	List<Comment> batchSelect(@Param("params") List<String> params);
 
 	/**
@@ -52,14 +52,14 @@ public interface CommentMapper {
 	 * 单个插入
 	 * @param comment
 	 */
-	@Insert("insert into comment(commentId,songId,nickname,linkedCount,content,time) value (#{commentId},#{songId},#{nickname},#{linkedCount},#{content},#{time})")
+	@Insert("insert into comment(commentId,songId,nickname,linkedCount,content,time) value (#{id},#{songId},#{nickname},#{linkedCount},#{content},#{time})")
 	void insert(Comment comment);
 
 	/**
 	 * 批量插入
 	 * @param list
 	 */
-	@InsertProvider(type = CommentMapperProvider.class,method = "batchInsert")
+	@InsertProvider(type = CommentProvider.class,method = "batchInsert")
 	void batchInsert(@Param("list") List<Comment> list);
 
 	/**
@@ -73,7 +73,7 @@ public interface CommentMapper {
 	/**
 	 * 批量更新
 	 */
-	@UpdateProvider(type = CommentMapperProvider.class,method = "batchUpdate")
+	@UpdateProvider(type = CommentProvider.class,method = "batchUpdate")
 	void batchUpdate(@Param("list") List<Comment> comments);
 
 	/**
@@ -87,7 +87,7 @@ public interface CommentMapper {
 	 * 批量删除
 	 * @param params
 	 */
-	@DeleteProvider(type = CommentMapperProvider.class,method = "batchDelete")
+	@DeleteProvider(type = CommentProvider.class,method = "batchDelete")
 	void batchDelete(@Param("params") List<String> params);
 	/**
 	 *

@@ -25,14 +25,19 @@ public class MusicMapperTest {
 	@Autowired
 	private CommentMapper commentMapper;
 	@Test
+//	@Transactional
 	public void insertMusic(){
+		//int songId, String name, String artistsId, int score, String album, String commentThreadId
 		Music music = new Music();
-		music.setSongId("1234");
-		music.setName("测试");
-		music.setAuthor("xu");
+		music.setId(3023);
+		music.setName("测试名称");
+		music.setArtistsId("11679,9524");
 		music.setAlbum("测试专辑");
+		music.setCommentThreadId("R_SO_4_35599542");
+		music.setScore(100);
 		musicMapper.insert(music);
 		Assert.assertEquals(1,musicMapper.findAll().size());
+		System.out.println("测试成功");
 	}
 
 	@Test
@@ -40,19 +45,19 @@ public class MusicMapperTest {
 	@Rollback(true)// 事务自动回滚，默认是true。可以不写
 	/**
 	 * junit单元测试时,插入成功后会回滚
-	 * 数据库主键会继续自增
+	 * 不过不影响数据库主键自增
 	 * Rolled back transaction after test execution for test context......
 	 */
 	public void batchInsert(){
 		Comment comment = new Comment();
-		comment.setCommentId("70001");
+		comment.setId("70001");
 		comment.setContent("测试内容7");
 		comment.setLinkedCount(7000);
 		comment.setSongId("songId7");
 		comment.setNickname("测试昵称7");
 		comment.setTime(DateUtil.dateToString(new Date(),DateUtil.YYYYMMDD));
 		Comment comment2 = new Comment();
-		comment2.setCommentId("80001");
+		comment2.setId("80001");
 		comment2.setContent("测试内容8");
 		comment2.setLinkedCount(8000);
 		comment2.setSongId("songId8");
@@ -80,11 +85,11 @@ public class MusicMapperTest {
 	public void batchUpdateComment(){
 		List<Comment> comments = new ArrayList<>();
 		Comment comment = new Comment();
-		comment.setCommentId("20001");
+		comment.setId("20001");
 		comment.setContent("2二次更新");
 
 		Comment comment2 = new Comment();
-		comment2.setCommentId("30001");
+		comment2.setId("30001");
 		comment2.setContent("3二次更新");
 
 		comments.add(comment);

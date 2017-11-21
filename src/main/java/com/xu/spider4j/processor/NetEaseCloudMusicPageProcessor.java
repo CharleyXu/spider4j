@@ -63,16 +63,19 @@ public class NetEaseCloudMusicPageProcessor implements PageProcessor {
 	}
 
 	public static void main(String[] args) {
-		Spider.create(new NetEaseCloudMusicPageProcessor())
-				//初始URL
-				.addUrl(START_URL)
-//				.addPipeline(new ConsolePipeline())
-				//结果输出到文件
-//				.addPipeline(new JsonFilePipeline(RESULT_PATH))
-				.addPipeline(new JsonFilePipeline("D:\\webmagic\\"))
-				//开启5个线程抓取
-				.thread(5)
-				.run();
+//		Spider.create(new NetEaseCloudMusicPageProcessor())
+//				//初始URL
+//				.addUrl(START_URL)
+////				.addPipeline(new ConsolePipeline())
+//				//结果输出到文件
+////				.addPipeline(new JsonFilePipeline(RESULT_PATH))
+//				.addPipeline(new JsonFilePipeline("D:\\webmagic\\"))
+//				//开启5个线程抓取
+//				.thread(5)
+//				.run();
+
+		String artistsId = "3688,9061,5346,7219,2116,9272,4941,7891,9294,9269,3684,10561,10558,8327,9632,3094,3272,5347,8926,9491,6085,2525,6456,8329,13418,4895,3799,126174,1876,2134,5773,3072,2743,9493,8635,9943,5357,6068,7652,6070,6921,4942,4488,8151,3112,11562,4725,5350,3066,10595,2517,8259,4938,5198,2118";
+		System.out.println(artistsId.length());
 	}
 
 }

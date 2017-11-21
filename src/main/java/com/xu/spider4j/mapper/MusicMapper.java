@@ -2,7 +2,8 @@ package com.xu.spider4j.mapper;
 
 import com.xu.spider4j.entity.Music;
 
-import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
@@ -12,11 +13,21 @@ import java.util.List;
 @Component
 public interface MusicMapper {
 	@Select("select count(*) from music where songId = #{songId}")
-	int countBySongId(@Param("songId") String songId);
+	int countBySongId(@Param("songId") int songId);
 
-	@Select("insert into music(songId,name,author,album) value (#{songId},#{name},#{author},#{album})")
+	/**
+	 * 单个插入
+	 * @param music
+	 */
+	@Insert("INSERT INTO music(songId,name,artistsId,score,album,commentThreadId) value (#{id},#{name},#{artistsId},#{score},#{album},#{commentThreadId})")
 	void insert(Music music);
 
+	/**
+	 * 批量插入
+	 * @param list
+	 */
+	@InsertProvider(type = MusicProvider.class,method = "batchInsert")
+	void batchInsert(@Param("list") List<Music> list);
 
 	@Select("select * from music")
 //	@Options(flushCache = Options.FlushCachePolicy.DEFAULT)

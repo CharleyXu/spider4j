@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * SQL工厂类
+ * 评论SQL工厂类
  */
-public class CommentMapperProvider {
+public class CommentProvider {
 
 
 	public String findAll() {
@@ -44,7 +44,7 @@ public class CommentMapperProvider {
 		sb.append("(commentId,songId,nickname,linkedCount,content,time) ");
 		sb.append("VALUES ");
 		MessageFormat mf = new MessageFormat(
-				"(#'{'list[{0}].commentId},#'{'list[{0}].songId},#'{'list[{0}].nickname},#'{'list[{0}].linkedCount},#'{'list[{0}].content},#'{'list[{0}].time})");
+				"(#'{'list[{0}].id},#'{'list[{0}].songId},#'{'list[{0}].nickname},#'{'list[{0}].linkedCount},#'{'list[{0}].content},#'{'list[{0}].time})");
 		for (int i = 0; i < comments.size(); i++) {
 			sb.append(mf.format(new Object[]{i}));
 			if (i < comments.size() - 1) {
@@ -63,7 +63,7 @@ public class CommentMapperProvider {
 		MessageFormat mfCron = new MessageFormat("#'{'list[{0}].content'}'");
 		for (int i = 0; i < comments.size(); i++) {
 			sb.append("when (commentId=");
-			sb.append(comments.get(i).getCommentId());
+			sb.append(comments.get(i).getId());
 			sb.append(")");
 			sb.append(" then ");
 			sb.append(mfCron.format(new Object[]{i}));
@@ -72,7 +72,7 @@ public class CommentMapperProvider {
 		sb.append("where commentId in");
 		sb.append("(");
 		for (int i = 0; i < comments.size(); i++) {
-			sb.append(comments.get(i).getCommentId());
+			sb.append(comments.get(i).getId());
 			if (i < comments.size() - 1) {
 				sb.append(",");
 			}
