@@ -23,7 +23,6 @@ public class PageProcessorTest {
 	private NetEaseCloudMusicPipeline netEaseCloudMusicPipeline;
 
 	@Test
-	@Transactional
 	public void processTest(){
 		netEaseCloudMusicPageProcessor.start(netEaseCloudMusicPageProcessor,netEaseCloudMusicPipeline);
 	}
