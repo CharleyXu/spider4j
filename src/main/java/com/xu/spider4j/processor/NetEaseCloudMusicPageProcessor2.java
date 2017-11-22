@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.xu.spider4j.entity.Artist;
 import com.xu.spider4j.pipeline.NetEaseCloudMusicPipeline;
 
+import org.assertj.core.util.Strings;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -82,9 +83,9 @@ public class NetEaseCloudMusicPageProcessor2 implements PageProcessor {
 //		List<String> all = page.getHtml().xpath("//div[@id='song-list-pre-cache']//ul[@class='f-hide']/li/a").all();
 //		System.out.println("all size:"+all.size()+"\n"+all);
 		String s = page.getHtml().xpath("div[@id='song-list-pre-cache']/textarea/text()").toString();
-//		JSONArray jsonArray = JSONArray.parseArray(s);
-//		System.out.println("size"+jsonArray.size());
-		page.putField("result",page.getHtml().xpath("div[@id='song-list-pre-cache']/textarea/text()").toString());
+		if(!Strings.isNullOrEmpty(s)){
+			page.putField("result",s);
+		}
 	}
 
 	@Override
@@ -99,11 +100,11 @@ public class NetEaseCloudMusicPageProcessor2 implements PageProcessor {
 				//初始页   http://music.163.com/discover/artist
 				//歌手二级分类	http://music.163.com/discover/artist/cat?id=1001&initial=65
 				//歌手	http://music.163.com/artist?id=2116	3688	11679
-				.addUrl("http://music.163.com/artist?id=3688")
+				.addUrl("http://music.163.com/discover/artist")
 				//.setScheduler(new DepthLimitScheduler(3,true,0))
 				.addPipeline(pipeline)
 				//开启n个线程抓取
-				.thread(1)
+				.thread(5)
 				.run();
 	}
 

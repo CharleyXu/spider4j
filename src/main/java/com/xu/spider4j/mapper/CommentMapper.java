@@ -52,7 +52,7 @@ public interface CommentMapper {
 	 * 单个插入
 	 * @param comment
 	 */
-	@Insert("insert into comment(commentId,songId,nickname,linkedCount,content,time) value (#{id},#{songId},#{nickname},#{linkedCount},#{content},#{time})")
+	@Insert("insert ignore into comment(commentId,songId,nickname,linkedCount,content,time) value (#{id},#{songId},#{nickname},#{linkedCount},#{content},#{time})")
 	void insert(Comment comment);
 
 	/**

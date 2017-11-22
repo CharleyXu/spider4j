@@ -11,7 +11,7 @@ public class RelationArtlistMusicProvider {
 	public String batchInsert(Map<String,Object> map){
 		List<RelationArtlistMusic> list = (List<RelationArtlistMusic>) map.get("list");
 		StringBuilder sb = new StringBuilder();
-		sb.append("INSERT INTO relation_artlist_music ");
+		sb.append("INSERT IGNORE INTO relation_artlist_music ");
 		sb.append("(artistId,musicId) ");
 		sb.append("VALUES ");
 		MessageFormat mf = new MessageFormat(

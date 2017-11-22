@@ -22,7 +22,7 @@ public interface ArtistMapper {
 	 * 批量插入
 	 * @param list
 	 */
-	@InsertProvider(type = MusicProvider.class,method = "batchInsert")
+	@InsertProvider(type = ArtistProvider.class,method = "batchInsert")
 	void batchInsert(@Param("list") List<Artist> list);
 
 	@Select("select * from artist")

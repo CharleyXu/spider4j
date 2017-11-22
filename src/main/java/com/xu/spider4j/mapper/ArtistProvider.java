@@ -14,7 +14,7 @@ public class ArtistProvider {
 	public String batchInsert(Map<String,Object> map){
 		StringBuilder sb = new StringBuilder();
 		List<Artist> list = (List<Artist>)map.get("list");
-		sb.append("INSERT INTO artist ");
+		sb.append("INSERT IGNORE INTO artist ");
 		sb.append("(artistId,name,alia) ");
 		sb.append("VALUES ");
 		MessageFormat mf = new MessageFormat(

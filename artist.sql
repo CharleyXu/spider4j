@@ -10,24 +10,22 @@ Target Server Type    : MYSQL
 Target Server Version : 50715
 File Encoding         : 65001
 
-Date: 2017-11-22 18:58:39
+Date: 2017-11-22 18:58:27
 */
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for music
+-- Table structure for artist
 -- ----------------------------
-DROP TABLE IF EXISTS `music`;
-CREATE TABLE `music` (
+DROP TABLE IF EXISTS `artist`;
+CREATE TABLE `artist` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `musicId` int(10) NOT NULL COMMENT '音乐Id',
-  `name` varchar(400) NOT NULL COMMENT '音乐名称',
-  `album` varchar(100) DEFAULT NULL COMMENT '专辑名称',
-  `score` int(10) NOT NULL COMMENT '热度',
-  `commentThreadId` varchar(30) DEFAULT NULL COMMENT '评论请求ID',
+  `artistId` int(10) NOT NULL COMMENT '歌手Id',
+  `name` varchar(100) NOT NULL COMMENT '歌手名称',
+  `alia` varchar(100) DEFAULT NULL COMMENT '歌手别名',
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
   `last_update` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `music_idx` (`musicId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='音乐表';
+  UNIQUE KEY `artist_idx` (`artistId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='歌手表';

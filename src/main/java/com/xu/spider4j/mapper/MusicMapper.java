@@ -12,14 +12,16 @@ import java.util.List;
 
 @Component
 public interface MusicMapper {
-	@Select("select count(*) from music where songId = #{songId}")
-	int countBySongId(@Param("songId") int songId);
+	@Select("select count(*) from music where musicId = #{musicId}")
+	int countBySongId(@Param("songId") int musicId);
 
 	/**
-	 * 单个插入
+	 * 单个插入	避免重复插入
+	 * (根据主键或者唯一索引判断)，如果数据库没有数据，就插入新的数据，如果有数据的话就跳过这条数据.
+	 * 不影响AUTO_INCREMENT
 	 * @param music
 	 */
-	@Insert("INSERT INTO music(songId,name,artistsId,score,album,commentThreadId) value (#{id},#{name},#{artistsId},#{score},#{album},#{commentThreadId})")
+	@Insert("INSERT IGNORE INTO music(musicId,name,album,score,commentThreadId) value (#{id},#{name},#{album},#{score},#{commentThreadId})")
 	void insert(Music music);
 
 	/**

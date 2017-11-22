@@ -19,6 +19,26 @@ public class Artist {
 		this.alia = alia;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Artist artist = (Artist) o;
+
+		if (id != artist.id) return false;
+		if (name != null ? !name.equals(artist.name) : artist.name != null) return false;
+		return alia != null ? alia.equals(artist.alia) : artist.alia == null;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = id;
+		result = 31 * result + (name != null ? name.hashCode() : 0);
+		result = 31 * result + (alia != null ? alia.hashCode() : 0);
+		return result;
+	}
+
 	public int getId() {
 		return id;
 	}

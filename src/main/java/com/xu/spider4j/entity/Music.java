@@ -8,19 +8,18 @@ import com.alibaba.fastjson.JSON;
 public class Music {
 	private int	id;//歌曲Id
 	private String	name;//名称
-//	private String	artistsId;//歌手Id( 有 邵夷贝 / GALA 这种情况)	多对多，建立关系表
-	private int score;//热度
 	private String	album;//专辑名称
+	private int score;//热度
 	private String commentThreadId;//评论ThreadId
 
 	public Music() {
 	}
 
-	public Music(int id, String name, int score, String album, String commentThreadId) {
+	public Music(int id, String name, String album, int score, String commentThreadId) {
 		this.id = id;
 		this.name = name;
-		this.score = score;
 		this.album = album;
+		this.score = score;
 		this.commentThreadId = commentThreadId;
 	}
 
@@ -40,20 +39,20 @@ public class Music {
 		this.name = name;
 	}
 
-	public int getScore() {
-		return score;
-	}
-
-	public void setScore(int score) {
-		this.score = score;
-	}
-
 	public String getAlbum() {
 		return album;
 	}
 
 	public void setAlbum(String album) {
 		this.album = album;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
 	}
 
 	public String getCommentThreadId() {

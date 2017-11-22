@@ -18,7 +18,7 @@ public interface RelationArtlistMusicMapper {
 	 * 单个插入
 	 * @param relationArtlistMusic
 	 */
-	@Insert("INSERT INTO relation_artlist_music(artlistId,musicId) value (#{artlistId},#{musicId})")
+	@Insert("INSERT IGNORE INTO relation_artlist_music(artlistId,musicId) value (#{artlistId},#{musicId})")
 	void insert(RelationArtlistMusic relationArtlistMusic);
 
 

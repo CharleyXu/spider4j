@@ -12,18 +12,22 @@ import com.xu.spider4j.mapper.RelationArtlistMusicMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import us.codecraft.webmagic.ResultItems;
 import us.codecraft.webmagic.Task;
 import us.codecraft.webmagic.pipeline.Pipeline;
+
 @Component
 /**
  * 自定义Pipeline
  * 整合Mybatis,抽取结果存入Mysql
  */
-public class NetEaseCloudMusicPipeline implements Pipeline{
+public class NetEaseCloudMusicPipeline implements Pipeline {
 	@Autowired
 	private ArtistMapper artistMapper;
 	@Autowired
@@ -35,39 +39,52 @@ public class NetEaseCloudMusicPipeline implements Pipeline{
 	// 在page.putField(key,value)中保存的数据，可以通过ResultItems.get(key)获取
 	@Override
 	public void process(ResultItems resultItems, Task task) {
+		if(resultItems.get("result")==null){
+			return;
+		}
 		JSONArray jsonArray = JSONArray.parseArray(resultItems.get("result"));
-		System.out.println("size:"+jsonArray.size()+"\n"+jsonArray.toJSONString());
-		//处理歌手信息	artistList
+//		System.out.println("size:"+jsonArray.size()+"\n"+jsonArray.toJSONString());
+		//处理歌手信息	批量
 		List<Artist> artistList = new ArrayList<>();
 		//处理音乐信息	批量
 		List<Music> musicList = new ArrayList<>();
-		//处理歌手_音乐关系_信息
+		//处理歌手_音乐关系_信息	批量
 		List<RelationArtlistMusic> relationArtlistMusicList = new ArrayList<>();
 
-		for (int i = 0,size = jsonArray.size(); i <size ; i++) {
+		for (int i = 0, size = jsonArray.size(); i < size; i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
 			int musicId = jsonObject.getInteger("id");//音乐Id
 			String name = jsonObject.getString("name");//音乐名称
 			int score = jsonObject.getInteger("score");//热度
 			String album = jsonObject.getJSONObject("album").getString("name");//专辑名称
 			String commentThreadId = jsonObject.getString("commentThreadId");//评论请求Id
-
 			JSONArray artists = jsonObject.getJSONArray("artists");
-
 			List<Artist> tempList = JSON.parseArray(artists.toJSONString(), Artist.class);//临时ArtistList
-			for (int j = 0,length = tempList.size(); j < length; j++) {
+			for (int j = 0, length = tempList.size(); j < length; j++) {
 				int artistId = tempList.get(j).getId();
-				RelationArtlistMusic relationArtlistMusic = new RelationArtlistMusic(artistId,musicId);
+				RelationArtlistMusic relationArtlistMusic = new RelationArtlistMusic(artistId, musicId);
 				relationArtlistMusicList.add(relationArtlistMusic);
 			}
 			artistList.addAll(tempList);
 
-			Music music = new Music(musicId,name,score,album,commentThreadId);
-			System.out.println(music);
+			Music music = new Music(musicId, name, album, score, commentThreadId);
 			musicList.add(music);
 		}
-		//		artistMapper.batchInsert(artist);
-		//		musicMapper.batchInsert(musicList);
-		//		relationArtlistMusicMapper.batchInsert(relationArtlistMusicList);
+		distinctArtistList(artistList);////Artist去重
+
+//		System.out.println("artistList: " + artistList.size() + "\n" + artistList);
+//		System.out.println("musicList: " + musicList.size() + "\n" + musicList);
+//		System.out.println("relationArtlistMusicList: " + relationArtlistMusicList.size() + "\n" + relationArtlistMusicList);
+
+		artistMapper.batchInsert(artistList);
+		musicMapper.batchInsert(musicList);
+		relationArtlistMusicMapper.batchInsert(relationArtlistMusicList);
 	}
+
+	public void distinctArtistList(List<Artist> list) {
+		Set<Artist> set = new HashSet<Artist>(list);
+		list.clear();
+		list.addAll(set);
+	}
+
 }

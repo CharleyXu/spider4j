@@ -7,23 +7,23 @@ import com.alibaba.fastjson.JSON;
  * relation_artlist_music
  */
 public class RelationArtlistMusic {
-	private int artlistId;
+	private int artistId;
 	private int musicId;
 
 	public RelationArtlistMusic() {
 	}
 
-	public RelationArtlistMusic(int artlistId, int musicId) {
-		this.artlistId = artlistId;
+	public RelationArtlistMusic(int artistId, int musicId) {
+		this.artistId = artistId;
 		this.musicId = musicId;
 	}
 
-	public int getArtlistId() {
-		return artlistId;
+	public int getArtistId() {
+		return artistId;
 	}
 
-	public void setArtlistId(int artlistId) {
-		this.artlistId = artlistId;
+	public void setArtistId(int artistId) {
+		this.artistId = artistId;
 	}
 
 	public int getMusicId() {
