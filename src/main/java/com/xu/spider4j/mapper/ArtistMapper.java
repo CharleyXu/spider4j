@@ -15,7 +15,7 @@ public interface ArtistMapper {
 	 * 单个插入
 	 * @param artist
 	 */
-	@Insert("INSERT INTO artist(artistId,name,alia) value (#{id},#{name},#{alia})")
+	@Insert("INSERT IGNORE INTO artist(artistId,name,alia) value (#{id},#{name},#{alia})")
 	void insert(Artist artist);
 
 	/**
