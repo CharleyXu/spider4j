@@ -1,7 +1,7 @@
 package com.xu.spider4j.service;
 
 import com.xu.spider4j.pipeline.NetEaseCloudMusicPipeline;
-import com.xu.spider4j.processor.NetEaseCloudMusicPageProcessor2;
+import com.xu.spider4j.processor.NetEaseCloudMusicPageProcessor;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RunWith(SpringRunner.class)
 public class PageProcessorTest {
 	@Autowired
-	private NetEaseCloudMusicPageProcessor2 netEaseCloudMusicPageProcessor;
+	private NetEaseCloudMusicPageProcessor netEaseCloudMusicPageProcessor;
 	@Autowired
 	private NetEaseCloudMusicPipeline netEaseCloudMusicPipeline;
 
