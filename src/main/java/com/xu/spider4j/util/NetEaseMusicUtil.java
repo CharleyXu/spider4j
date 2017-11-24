@@ -1,6 +1,8 @@
 package com.xu.spider4j.util;
 
 
+import com.sun.org.apache.xml.internal.security.encryption.CipherData;
+import com.sun.org.apache.xml.internal.security.encryption.CipherValue;
 import com.xu.spider4j.processor.NetEaseCloudMusicPageProcessor;
 
 import org.apache.commons.lang3.StringUtils;
@@ -13,6 +15,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
 
 import sun.misc.BASE64Encoder;
 
@@ -23,6 +27,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.crypto.Cipher;
+import javax.crypto.CipherSpi;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -31,13 +36,47 @@ import javax.crypto.spec.SecretKeySpec;
  */
 public class NetEaseMusicUtil {
 
-	/**
-	 * 	对AJAX数据进行单独请求
-	 * @param songId
-	 * @param offset
-	 * @return
-	 */
+	//用户歌单
+	public static String getUserPlaylist(String uid) {
+		String result = null;
+		UrlParamPair upp = Api.getPlaylistOfUser(uid);
+		String req_str = upp.getParas().toJSONString();
+		Connection.Response response = null;
+		try {
+			response = Jsoup.connect("http://music.163.com/weapi/user/playlist?csrf_token=")
+					.userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:57.0) Gecko/20100101 Firefox/57.0")
+					.header("Accept", "*/*")
+					.header("Cache-Control", "no-cache")
+					.header("Connection", "keep-alive")
+					.header("Host", "music.163.com")
+					.header("Accept-Language", "zh-CN,en-US;q=0.7,en;q=0.3")
+					.header("DNT", "1")
+					.header("Pragma", "no-cache")
+					.header("Content-Type", "application/x-www-form-urlencoded")
+					.data(JSSecret.getDatas(req_str))
+					.method(Connection.Method.POST)
+					.ignoreContentType(true)
+					.timeout(10000)
+					.execute();
+			result = response.body();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	public static void main(String[] args) {
+		String uid = "72648534";
+		String userPlaylist = getUserPlaylist(uid);
+		System.out.println(userPlaylist);
+
+		String s = crawlAjaxUrl("25906124", 0);
+		System.out.println("s: \n" + s);
+	}
+
+
 	public static String crawlAjaxUrl(String songId, int offset) {
+
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		CloseableHttpResponse response = null;
 		String first_param = "{rid:\"\", offset:\"offset_param\", total:\"true\", limit:\"20\", csrf_token:\"\"}";
@@ -49,11 +88,13 @@ public class NetEaseMusicUtil {
 			// String secKey = new BigInteger(100, new SecureRandom()).toString(32).substring(0, 16);
 			String secKey = "FFFFFFFFFFFFFFFF";
 			// 两遍ASE加密
-			String encText = NetEaseMusicUtil.aesEncrypt(aesEncrypt(first_param, "0CoJUm6Qyw8W8jud"), secKey);
+			String encText = aesEncrypt(aesEncrypt(first_param, "0CoJUm6Qyw8W8jud"), secKey);
 			//
 			String encSecKey = rsaEncrypt();
+
 			HttpPost httpPost = new HttpPost("http://music.163.com/weapi/v1/resource/comments/R_SO_4_" + songId + "/?csrf_token=");
 			httpPost.addHeader("Referer", NetEaseCloudMusicPageProcessor.BASE_URL);
+
 			List<NameValuePair> ls = new ArrayList<NameValuePair>();
 			ls.add(new BasicNameValuePair("params", encText));
 			ls.add(new BasicNameValuePair("encSecKey", encSecKey));
@@ -67,6 +108,7 @@ public class NetEaseMusicUtil {
 			if (entity != null) {
 				return EntityUtils.toString(entity, "utf-8");
 			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -77,19 +119,20 @@ public class NetEaseMusicUtil {
 				e.printStackTrace();
 			}
 		}
+
 		return "";
 	}
 
 	/**
 	 * ASE-128-CBC加密模式可以需要16位
-	 * @param src	加密内容
-	 * @param key	密钥
-	 * @return
-	 * @throws Exception
+	 *
+	 * @param src 加密内容
+	 * @param key 密钥
 	 */
 	public static String aesEncrypt(String src, String key) throws Exception {
 		String encodingFormat = "UTF-8";
 		String iv = "0102030405060708";
+
 		Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 		byte[] raw = key.getBytes();
 		SecretKeySpec secretKeySpec = new SecretKeySpec(raw, "AES");
@@ -133,9 +176,13 @@ public class NetEaseMusicUtil {
 								+ (yushu_day / (1000 * 60 * 60)) + "时"
 								+ (yushu_hour / (1000 * 60)) + "分"
 								+ (yushu_minute / 1000) + "秒";
+
 					}
+
 				}
+
 			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -166,5 +213,4 @@ public class NetEaseMusicUtil {
 			return source;
 		}
 	}
-
 }
