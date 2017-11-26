@@ -32,18 +32,21 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
- * 解密工具类
+ * NetEaseMusic工具类
  */
 public class NetEaseMusicUtil {
-
+	//评论URL
+	public static final String COMMENT_URL = "http://music.163.com/weapi/v1/resource/comments/R_SO_4_25906124?csrf_token=";
 	//用户歌单
+	public static final String USER_PLAYLIST = "http://music.163.com/weapi/user/playlist?csrf_token=";
+
 	public static String getUserPlaylist(String uid) {
-		String result = null;
 		UrlParamPair upp = Api.getPlaylistOfUser(uid);
 		String req_str = upp.getParas().toJSONString();
 		Connection.Response response = null;
+		String result = null;
 		try {
-			response = Jsoup.connect("http://music.163.com/weapi/user/playlist?csrf_token=")
+			response = Jsoup.connect(COMMENT_URL)
 					.userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:57.0) Gecko/20100101 Firefox/57.0")
 					.header("Accept", "*/*")
 					.header("Cache-Control", "no-cache")
@@ -74,7 +77,7 @@ public class NetEaseMusicUtil {
 		System.out.println("s: \n" + s);
 	}
 
-
+	//无法使用
 	public static String crawlAjaxUrl(String songId, int offset) {
 
 		CloseableHttpClient httpclient = HttpClients.createDefault();
@@ -108,7 +111,6 @@ public class NetEaseMusicUtil {
 			if (entity != null) {
 				return EntityUtils.toString(entity, "utf-8");
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

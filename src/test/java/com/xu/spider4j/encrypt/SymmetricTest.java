@@ -78,6 +78,9 @@ public class SymmetricTest {
 		String decryptStr = aes.decryptStr(encryptHex, CharsetUtil.CHARSET_UTF_8);
 
 		Assert.assertEquals(content, decryptStr);
+
+
+		System.out.println(new String(SecureUtil.aes(key).decrypt(SecureUtil.aes(key).encrypt(content)),CharsetUtil.CHARSET_UTF_8));
 	}
 
 	@Test
@@ -86,7 +89,7 @@ public class SymmetricTest {
 		//构建
 		//随机生成密钥
 		byte[] key = SecureUtil.generateKey(SymmetricAlgorithm.AES.getValue()).getEncoded();
-		AES aes = new AES(Mode.CBC, Padding.NoPadding, key);
+		AES aes = new AES(Mode.PCBC, Padding.NoPadding, key);
 		aes.setIv(new IvParameterSpec("0102030405060708".getBytes()));
 		//加密
 		aes.encrypt(content);

@@ -1,5 +1,6 @@
 package com.xu.spider4j.encrypt;
 
+import com.xiaoleilu.hutool.crypto.SecureUtil;
 import com.xiaoleilu.hutool.crypto.digest.DigestAlgorithm;
 import com.xiaoleilu.hutool.crypto.digest.DigestUtil;
 import com.xiaoleilu.hutool.crypto.digest.Digester;
@@ -31,6 +32,8 @@ public class DigestTest {
 
 		String md5Hex2 = DigestUtil.md5Hex(IoUtil.toStream(testStr, CharsetUtil.CHARSET_UTF_8));
 		Assert.assertEquals("5393554e94bf0eb6436f240a4fd71282", md5Hex2);
+
+		System.out.println(SecureUtil.md5(testStr));
 	}
 
 	@Test
@@ -42,6 +45,8 @@ public class DigestTest {
 
 		String sha1Hex2 = DigestUtil.sha1Hex(IoUtil.toStream(testStr, CharsetUtil.CHARSET_UTF_8));
 		Assert.assertEquals("ecabf586cef0d3b11c56549433ad50b81110a836", sha1Hex2);
+
+		System.out.println(SecureUtil.sha1(testStr));
 	}
 
 	@Test
