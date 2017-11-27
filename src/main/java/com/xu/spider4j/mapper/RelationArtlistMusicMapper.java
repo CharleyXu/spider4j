@@ -26,7 +26,7 @@ public interface RelationArtlistMusicMapper {
 	 * 批量插入
 	 * @param list
 	 */
-	@InsertProvider(type = RelationArtlistMusicProvider.class,method = "batchInsert")
+	@InsertProvider(type = RelationArtlistMusicSqlProvider.class,method = "batchInsert")
 	void batchInsert(@Param("list") List<RelationArtlistMusic> list);
 
 	/**

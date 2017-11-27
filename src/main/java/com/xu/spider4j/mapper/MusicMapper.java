@@ -1,11 +1,16 @@
 package com.xu.spider4j.mapper;
 
 import com.xu.spider4j.entity.Music;
+import com.xu.spider4j.entity.PageRequest;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.jdbc.SQL;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,6 +18,7 @@ import java.util.List;
 @Component
 public interface MusicMapper {
 	@Select("select count(*) from music where musicId = #{musicId}")
+	@Results({@Result(property = "id", column = "musicId")})
 	int countBySongId(@Param("songId") int musicId);
 
 	/**
@@ -28,22 +34,30 @@ public interface MusicMapper {
 	 * 批量插入
 	 * @param list
 	 */
-	@InsertProvider(type = MusicProvider.class,method = "batchInsert")
+	@InsertProvider(type = MusicSqlProvider.class,method = "batchInsert")
 	void batchInsert(@Param("list") List<Music> list);
 
+	/**
+	 * 查询
+	 * @return
+	 */
 	@Select("select * from music")
 //	@Options(flushCache = Options.FlushCachePolicy.DEFAULT)
 	List<Music> findAll();
 
 	/**
-	 *
-	 * 其中@Options注解常用属性:
-	 - flushCache:刷新缓存策略，有DEFAULT,TRUE,FALSE三种值，默认DEFAULT表示刷新查询语句的缓存
-	 - useCache：默认true，表示使用缓存
-	 - fetchSize：查询时的获取数量
-	 - useGeneratedKeys：默认false，是否返回插入的id
-	 - keyProperty：实体类id属性
-	 - keyColumn：实体类属性对应数据库的字段
-	 *
+	 * 分页查询
+	 * @param request
+	 * @return
 	 */
+	@SelectProvider(type = MusicSqlProvider.class, method = "findByPage")
+	@Results({@Result(property = "id", column = "musicId")})
+	List<Music> findByPage(@Param("page") PageRequest request);
+
+	/**
+	 * 查询数量
+	 * @return
+	 */
+	@Select("select count(*) from music")
+	int countSize();
 }

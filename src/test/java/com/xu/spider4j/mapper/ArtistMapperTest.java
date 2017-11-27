@@ -24,4 +24,9 @@ public class ArtistMapperTest {
 		Assert.assertEquals(1,artistMapper.findAll().size());
 		System.out.println("测试通过");
 	}
+
+	@Test
+	public void selectAll(){
+		System.out.println("size:"+artistMapper.countAllSize());
+	}
 }

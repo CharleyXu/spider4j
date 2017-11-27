@@ -2,31 +2,46 @@ package com.xu.spider4j.entity;
 
 import com.alibaba.fastjson.JSON;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 /**
  * 评论实体类
  */
+@Document(collection = "comment")
 public class Comment {
-	private String id;//评论Id
-	private String	songId;//歌曲Id
+	@Id
+	private int id;//评论Id
+	private int	songId;//歌曲Id
+	private int  userId;//用户Id
 	private String	nickname;//用户昵称
-	private Integer	linkedCount;//点赞数
+	private int	linkedCount;//点赞数
 	private String	content;//内容
-	private String time;//时间
+	private long time;//时间
+	private Comment beReplied;//是否是回复的评论
 
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
-	public String getSongId() {
+	public int getSongId() {
 		return songId;
 	}
 
-	public void setSongId(String songId) {
+	public void setSongId(int songId) {
 		this.songId = songId;
+	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
 	public String getNickname() {
@@ -37,11 +52,11 @@ public class Comment {
 		this.nickname = nickname;
 	}
 
-	public Integer getLinkedCount() {
+	public int getLinkedCount() {
 		return linkedCount;
 	}
 
-	public void setLinkedCount(Integer linkedCount) {
+	public void setLinkedCount(int linkedCount) {
 		this.linkedCount = linkedCount;
 	}
 
@@ -53,12 +68,20 @@ public class Comment {
 		this.content = content;
 	}
 
-	public String getTime() {
+	public long getTime() {
 		return time;
 	}
 
-	public void setTime(String time) {
+	public void setTime(long time) {
 		this.time = time;
+	}
+
+	public Comment getBeReplied() {
+		return beReplied;
+	}
+
+	public void setBeReplied(Comment beReplied) {
+		this.beReplied = beReplied;
 	}
 
 	@Override

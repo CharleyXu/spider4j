@@ -22,9 +22,12 @@ public interface ArtistMapper {
 	 * 批量插入
 	 * @param list
 	 */
-	@InsertProvider(type = ArtistProvider.class,method = "batchInsert")
+	@InsertProvider(type = ArtistSqlProvider.class,method = "batchInsert")
 	void batchInsert(@Param("list") List<Artist> list);
 
 	@Select("select * from artist")
 	List<Artist> findAll();
+
+	@Select("select count(1) from artist")
+	int countAllSize();
 }

@@ -2,6 +2,8 @@ package com.xu.spider4j.mapper;
 
 import com.xu.spider4j.entity.Comment;
 import com.xu.spider4j.entity.Music;
+import com.xu.spider4j.entity.Page;
+import com.xu.spider4j.entity.PageRequest;
 import com.xu.spider4j.util.DateUtil;
 import org.junit.Assert;
 import org.junit.Test;
@@ -49,19 +51,19 @@ public class MusicMapperTest {
 	 */
 	public void batchInsert(){
 		Comment comment = new Comment();
-		comment.setId("70001");
+		comment.setId(70001);
 		comment.setContent("测试内容7");
 		comment.setLinkedCount(7000);
-		comment.setSongId("songId7");
+		comment.setSongId(1);
 		comment.setNickname("测试昵称7");
-		comment.setTime(DateUtil.dateToString(new Date(),DateUtil.YYYYMMDD));
+		comment.setTime(System.currentTimeMillis());
 		Comment comment2 = new Comment();
-		comment2.setId("80001");
+		comment2.setId(80001);
 		comment2.setContent("测试内容8");
 		comment2.setLinkedCount(8000);
-		comment2.setSongId("songId8");
+		comment2.setSongId(8);
 		comment2.setNickname("测试昵称8");
-		comment2.setTime(DateUtil.dateToString(new Date(),DateUtil.YYYYMMDD));
+		comment2.setTime(System.currentTimeMillis());
 		List<Comment> list = new ArrayList<>();
 		list.add(comment);
 		list.add(comment2);
@@ -84,11 +86,11 @@ public class MusicMapperTest {
 	public void batchUpdateComment(){
 		List<Comment> comments = new ArrayList<>();
 		Comment comment = new Comment();
-		comment.setId("20001");
+		comment.setId(20001);
 		comment.setContent("2二次更新");
 
 		Comment comment2 = new Comment();
-		comment2.setId("30001");
+		comment2.setId(30001);
 		comment2.setContent("3二次更新");
 
 		comments.add(comment);
@@ -108,6 +110,26 @@ public class MusicMapperTest {
 		System.out.println("comments:"+comments);
 		commentMapper.batchDelete(list);
 		Assert.assertEquals(5,commentMapper.findAll().size());
+	}
+
+	//分页测试
+	@Test
+	public void findByPage(){
+		PageRequest request = new PageRequest();
+		int pageSize = 20 ;//
+		request.setStart(0);
+		request.setSize(pageSize);
+		request.setSorts(new PageRequest.Sort[]{new PageRequest.Sort("musicId","asc")});
+		List<Music> list = musicMapper.findByPage(request);
+		Page page = new Page();
+		page.setRows(list);
+		int sum = musicMapper.countSize();//总记录数
+		int pageNumbers = sum/pageSize+1;//总页数
+		page.setTotalPages(pageNumbers);
+		page.setTotalRows(sum);
+		
+
+		System.out.println("page:\n"+page);
 	}
 
 }

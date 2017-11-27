@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * 评论SQL工厂类
  */
-public class CommentProvider {
+public class CommentSqlProvider {
 
 
 	public String findAll() {
