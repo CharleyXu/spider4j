@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -45,9 +46,7 @@ public class MusicMapperTest {
 	@Transactional
 	@Rollback(true)// 事务自动回滚，默认是true。可以不写
 	/**
-	 * junit单元测试时,插入成功后会回滚
-	 * 不过不影响数据库主键自增
-	 * Rolled back transaction after test execution for test context......
+	 * Comment 暂时不用
 	 */
 	public void batchInsert(){
 		Comment comment = new Comment();
@@ -74,43 +73,6 @@ public class MusicMapperTest {
 		System.out.println("测试成功");
 	}
 
-	@Test
-	public void updateComment(){
-		String content = "测试内容更新";
-		String commentId = "20001";
-		commentMapper.updateOne(content,commentId);
-		System.out.println("测试成功");
-	}
-
-	@Test
-	public void batchUpdateComment(){
-		List<Comment> comments = new ArrayList<>();
-		Comment comment = new Comment();
-		comment.setId(20001);
-		comment.setContent("2二次更新");
-
-		Comment comment2 = new Comment();
-		comment2.setId(30001);
-		comment2.setContent("3二次更新");
-
-		comments.add(comment);
-		comments.add(comment2);
-		commentMapper.batchUpdate(comments);
-		System.out.println("测试成功");
-	}
-
-	@Test
-	@Transactional
-	public void batchSelect(){
-		String[] strings = {"70001", "80001"};
-		List<String> list = Arrays.asList(strings);
-		String[] strings1 = list.toArray(new String[strings.length]);
-		System.out.println("strings1:"+Arrays.toString(strings1));
-		List<Comment> comments = commentMapper.batchSelect(list);
-		System.out.println("comments:"+comments);
-		commentMapper.batchDelete(list);
-		Assert.assertEquals(5,commentMapper.findAll().size());
-	}
 
 	//分页测试
 	@Test
@@ -127,9 +89,22 @@ public class MusicMapperTest {
 		int pageNumbers = sum/pageSize+1;//总页数
 		page.setTotalPages(pageNumbers);
 		page.setTotalRows(sum);
-		
-
 		System.out.println("page:\n"+page);
+	}
+
+	@Test
+	public void findMusicByCondition(){
+		String artist = "Eason";
+		String name = "预感";
+		Music musicByCondition = musicMapper.findMusicByCondition(artist, name);
+		System.out.println(musicByCondition);
+
+		List<String> musicBySongName = musicMapper.findMusicBySongName(name);
+		Random random = new Random();
+		String songName = musicBySongName.get(random.nextInt(musicBySongName.size()));
+		System.out.println("songName:"+songName);
+		List<Music> listByArtist = musicMapper.findListByArtist(artist);
+		System.out.println("listByArtist:"+listByArtist);
 	}
 
 }

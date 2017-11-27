@@ -11,7 +11,10 @@ import javax.script.ScriptEngineManager;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 
-public class JSSecret {
+/**
+ * JS工具类
+ */
+public class JSUtil {
 	private static Invocable inv;
 	public static final String encText = "encText";
 	public static final String encSecKey = "encSecKey";
@@ -44,8 +47,8 @@ public class JSSecret {
 		try {
 			ScriptObjectMirror so = (ScriptObjectMirror) inv.invokeFunction("myHook", paras);
 			HashMap<String, String> datas = new HashMap<>();
-			datas.put("params", so.get(JSSecret.encText).toString());
-			datas.put("encSecKey", so.get(JSSecret.encSecKey).toString());
+			datas.put("params", so.get(JSUtil.encText).toString());
+			datas.put("encSecKey", so.get(JSUtil.encSecKey).toString());
 			return datas;
 		} catch (Exception e) {
 			e.printStackTrace();

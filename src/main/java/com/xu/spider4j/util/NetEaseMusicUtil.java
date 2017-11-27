@@ -1,8 +1,6 @@
 package com.xu.spider4j.util;
 
 
-import com.sun.org.apache.xml.internal.security.encryption.CipherData;
-import com.sun.org.apache.xml.internal.security.encryption.CipherValue;
 import com.xu.spider4j.processor.NetEaseCloudMusicPageProcessor;
 
 import org.apache.commons.lang3.StringUtils;
@@ -15,8 +13,6 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
 
 import sun.misc.BASE64Encoder;
 
@@ -27,56 +23,13 @@ import java.util.Date;
 import java.util.List;
 
 import javax.crypto.Cipher;
-import javax.crypto.CipherSpi;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
- * NetEaseMusic工具类
+ * 工具类该暂时无效
  */
 public class NetEaseMusicUtil {
-	//评论URL
-	public static final String COMMENT_URL = "http://music.163.com/weapi/v1/resource/comments/R_SO_4_25906124?csrf_token=";
-	//用户歌单
-	public static final String USER_PLAYLIST = "http://music.163.com/weapi/user/playlist?csrf_token=";
-
-	public static String getUserPlaylist(String uid) {
-		UrlParamPair upp = Api.getPlaylistOfUser(uid);
-		String req_str = upp.getParas().toJSONString();
-		Connection.Response response = null;
-		String result = null;
-		try {
-			response = Jsoup.connect(COMMENT_URL)
-					.userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:57.0) Gecko/20100101 Firefox/57.0")
-					.header("Accept", "*/*")
-					.header("Cache-Control", "no-cache")
-					.header("Connection", "keep-alive")
-					.header("Host", "music.163.com")
-					.header("Accept-Language", "zh-CN,en-US;q=0.7,en;q=0.3")
-					.header("DNT", "1")
-					.header("Pragma", "no-cache")
-					.header("Content-Type", "application/x-www-form-urlencoded")
-					.data(JSSecret.getDatas(req_str))
-					.method(Connection.Method.POST)
-					.ignoreContentType(true)
-					.timeout(10000)
-					.execute();
-			result = response.body();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return result;
-	}
-
-	public static void main(String[] args) {
-		String uid = "72648534";
-		String userPlaylist = getUserPlaylist(uid);
-		System.out.println(userPlaylist);
-
-		String s = crawlAjaxUrl("25906124", 0);
-		System.out.println("s: \n" + s);
-	}
-
 	//无法使用
 	public static String crawlAjaxUrl(String songId, int offset) {
 

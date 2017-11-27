@@ -17,7 +17,7 @@ import java.util.List;
 
 @Component
 public interface MusicMapper {
-	@Select("select count(*) from music where musicId = #{musicId}")
+	@Select("select count(1) from music where musicId = #{musicId}")
 	@Results({@Result(property = "id", column = "musicId")})
 	int countBySongId(@Param("songId") int musicId);
 
@@ -42,7 +42,6 @@ public interface MusicMapper {
 	 * @return
 	 */
 	@Select("select * from music")
-//	@Options(flushCache = Options.FlushCachePolicy.DEFAULT)
 	List<Music> findAll();
 
 	/**
@@ -58,6 +57,37 @@ public interface MusicMapper {
 	 * 查询数量
 	 * @return
 	 */
-	@Select("select count(*) from music")
+	@Select("select count(1) from music")
 	int countSize();
+
+	/**
+	 *实际业务
+	 *
+	 * 按照歌手和歌曲名称查询
+	 * 注意：歌手别名
+	 */
+	@Select("SELECT a.musicId,a.name FROM music a LEFT JOIN relation_artlist_music b on a.musicId = b.musicId WHERE a.`name`=#{name} and b.artistId = (" +
+			"SELECT artistId FROM artist c WHERE c.name = #{artist} OR c.alia LIKE CONCAT(CONCAT('%', #{artist}), '%') LIMIT 1)")
+	@Results({@Result(property = "id", column = "musicId")})
+	Music findMusicByCondition(@Param("artist") String artist,@Param("name") String name);
+
+	/**
+	 * 按照歌手查询
+	 * @param artist
+	 * @return
+	 */
+	@Select("SELECT a.musicId,a.name FROM music a LEFT JOIN relation_artlist_music b on a.musicId = b.musicId WHERE b.artistId = (" +
+			"SELECT artistId FROM artist c WHERE c.name = #{artist} OR c.alia LIKE CONCAT(CONCAT('%', #{artist}), '%') LIMIT 1)")
+	@Results({@Result(property = "id", column = "musicId")})
+	List<Music> findListByArtist(@Param("artist") String artist);
+
+	/**
+	 * 按照歌曲名称查询
+	 * @param name
+	 * @return
+	 */
+	@Select("SELECT musicId FROM music WHERE NAME = #{name}")
+	@Results({@Result(property = "id", column = "musicId")})
+	List<String> findMusicBySongName(@Param("name") String name);
+
 }
