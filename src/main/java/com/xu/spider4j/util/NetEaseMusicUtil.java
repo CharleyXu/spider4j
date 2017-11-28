@@ -43,8 +43,9 @@ public class NetEaseMusicUtil {
 			// 16位随机字符串，直接FFF
 			// String secKey = new BigInteger(100, new SecureRandom()).toString(32).substring(0, 16);
 			String secKey = "FFFFFFFFFFFFFFFF";
+			String iv = "0102030405060708";//偏移量
 			// 两遍ASE加密
-			String encText = aesEncrypt(aesEncrypt(first_param, "0CoJUm6Qyw8W8jud"), secKey);
+			String encText = aesEncrypt(aesEncrypt(first_param, "0CoJUm6Qyw8W8jud",iv), secKey,iv);
 			//
 			String encSecKey = rsaEncrypt();
 
@@ -79,15 +80,22 @@ public class NetEaseMusicUtil {
 	}
 
 	/**
-	 * ASE-128-CBC加密模式可以需要16位
+	 * ASE-128-CBC加密
 	 *
 	 * @param src 加密内容
 	 * @param key 密钥
 	 */
-	public static String aesEncrypt(String src, String key) throws Exception {
-		String encodingFormat = "UTF-8";
-		String iv = "0102030405060708";
 
+	/**
+	 * ASE-128-CBC加密
+	 * @param src	加密内容
+	 * @param key	密钥	16位
+	 * @param iv	偏移量	16
+	 * @return
+	 * @throws Exception
+	 */
+	public static String aesEncrypt(String src, String key,String iv) throws Exception {
+		String encodingFormat = "UTF-8";
 		Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 		byte[] raw = key.getBytes();
 		SecretKeySpec secretKeySpec = new SecretKeySpec(raw, "AES");
@@ -96,6 +104,17 @@ public class NetEaseMusicUtil {
 		cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, ivParameterSpec);
 		byte[] encrypted = cipher.doFinal(src.getBytes(encodingFormat));
 		return new BASE64Encoder().encode(encrypted);
+
+	}
+
+	public static void main(String[] args) {
+		String result = null;
+		try {
+			result = aesEncrypt("123", "0CoJUm6Qyw8W8jud", "0102030405060708");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println(result);
 
 	}
 

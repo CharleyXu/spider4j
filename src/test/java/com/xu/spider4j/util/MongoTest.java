@@ -31,19 +31,19 @@ public class MongoTest {
 
 	@Test
 	public void selectTest() {
-		Query query = new Query();
-		query.addCriteria(Criteria.where("sendMessage").is("1"));
-		List<Comment> comments = mongoTemplate.find(query, Comment.class);
-		System.out.println("comments:" + comments);
+//		Query query = new Query();
+//		query.addCriteria(Criteria.where("sendMessage").is("1"));
+//		List<Comment> comments = mongoTemplate.find(query, Comment.class);
+//		System.out.println("comments:" + comments);
 	}
 
 	@Test
 	public void select() {
-		Query query = new Query();
-		query.addCriteria(Criteria.where("replyMessage").is("2"));
-		query.with(new Sort(Sort.Direction.DESC, "createTime"));
-		List<Comment> comments = mongoTemplate.find(query, Comment.class);
-		System.out.println(comments);
+//		Query query = new Query();
+//		query.addCriteria(Criteria.where("replyMessage").is("2"));
+//		query.with(new Sort(Sort.Direction.DESC, "createTime"));
+//		List<Comment> comments = mongoTemplate.find(query, Comment.class);
+//		System.out.println(comments);
 	}
 }
 

@@ -24,7 +24,7 @@ public class PageProcessorTest {
 
 	@Test
 	public void processTest(){
-		netEaseCloudMusicPageProcessor.start(netEaseCloudMusicPageProcessor,netEaseCloudMusicPipeline);
+//		netEaseCloudMusicPageProcessor.start(netEaseCloudMusicPageProcessor,netEaseCloudMusicPipeline);
 	}
 
 
