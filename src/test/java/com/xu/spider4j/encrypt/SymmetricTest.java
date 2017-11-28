@@ -83,21 +83,6 @@ public class SymmetricTest {
 		System.out.println(new String(SecureUtil.aes(key).decrypt(SecureUtil.aes(key).encrypt(content)),CharsetUtil.CHARSET_UTF_8));
 	}
 
-	@Test
-	public void aesTest3(){
-		String content = "0102030405060708";
-		//构建
-		//随机生成密钥
-		byte[] key = SecureUtil.generateKey(SymmetricAlgorithm.AES.getValue()).getEncoded();
-		AES aes = new AES(Mode.PCBC, Padding.NoPadding, key);
-		aes.setIv(new IvParameterSpec("0102030405060708".getBytes()));
-		//加密
-		aes.encrypt(content);
-
-
-//		System.out.println(new String(tests,CharsetUtil.CHARSET_UTF_8));
-	}
-
 	/**
 	 * 随机生成秘钥
 	 */
