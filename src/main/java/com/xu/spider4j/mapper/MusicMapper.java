@@ -10,7 +10,6 @@ import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectProvider;
-import org.apache.ibatis.jdbc.SQL;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -83,11 +82,19 @@ public interface MusicMapper {
 
 	/**
 	 * 按照歌曲名称查询
-	 * @param name
-	 * @return
+	 *
+	 * @return musicId    的	List
 	 */
 	@Select("SELECT musicId FROM music WHERE NAME = #{name}")
 	@Results({@Result(property = "id", column = "musicId")})
 	List<String> findMusicBySongName(@Param("name") String name);
+
+	/**
+	 * 按照歌曲Id查询
+	 *
+	 * @return 歌手名称
+	 */
+	@Select("SELECT a.name FROM artist a LEFT JOIN relation_artlist_music b on a.artistId = b.artistId WHERE b.musicId = #{musicId}")
+	String findMusicBySongId(@Param("musicId") String musicId);
 
 }
