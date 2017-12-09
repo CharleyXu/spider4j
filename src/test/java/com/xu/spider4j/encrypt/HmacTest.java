@@ -1,5 +1,6 @@
 package com.xu.spider4j.encrypt;
 
+import com.google.common.base.Charsets;
 import com.xiaoleilu.hutool.crypto.digest.HMac;
 import com.xiaoleilu.hutool.crypto.digest.HmacAlgorithm;
 import com.xiaoleilu.hutool.io.IoUtil;
@@ -13,7 +14,7 @@ public class HmacTest {
 	public void hmacTest(){
 		String testStr = "test中文";
 
-		byte[] key = "password".getBytes();
+		byte[] key = "password".getBytes(Charsets.UTF_8);
 		HMac mac = new HMac(HmacAlgorithm.HmacMD5, key);
 
 		String macHex1 = mac.digestHex(testStr);

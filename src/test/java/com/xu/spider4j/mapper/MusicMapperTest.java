@@ -1,24 +1,17 @@
 package com.xu.spider4j.mapper;
 
-import com.xu.spider4j.entity.Comment;
 import com.xu.spider4j.entity.Music;
 import com.xu.spider4j.entity.Page;
 import com.xu.spider4j.entity.PageRequest;
-import com.xu.spider4j.util.DateUtil;
-import org.junit.Assert;
+import com.xu.spider4j.entity.Sort;
+import java.util.List;
+import java.util.Random;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -81,7 +74,7 @@ public class MusicMapperTest {
 		int pageSize = 20 ;//
 		request.setStart(0);
 		request.setSize(pageSize);
-		request.setSorts(new PageRequest.Sort[]{new PageRequest.Sort("musicId","asc")});
+		request.setSorts(new Sort[]{new Sort("musicId","asc")});
 		List<Music> list = musicMapper.findByPage(request);
 		Page page = new Page();
 		page.setRows(list);

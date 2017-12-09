@@ -1,7 +1,6 @@
 package com.xu.spider4j.encrypt;
 
-import com.xiaoleilu.hutool.crypto.Mode;
-import com.xiaoleilu.hutool.crypto.Padding;
+import com.google.common.base.Charsets;
 import com.xiaoleilu.hutool.crypto.SecureUtil;
 import com.xiaoleilu.hutool.crypto.symmetric.AES;
 import com.xiaoleilu.hutool.crypto.symmetric.DES;
@@ -9,22 +8,12 @@ import com.xiaoleilu.hutool.crypto.symmetric.SymmetricAlgorithm;
 import com.xiaoleilu.hutool.crypto.symmetric.SymmetricCrypto;
 import com.xiaoleilu.hutool.util.CharsetUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.coyote.http2.ByteUtil;
-import org.junit.Assert;
-import org.junit.Test;
-
-import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-
-import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * 对称加密算法单元测试
@@ -114,7 +103,7 @@ public class SymmetricTest {
 			KeyGenerator kg = KeyGenerator.getInstance("AES");
 			// kg.init(128);//要生成多少位，只需要修改这里即可128, 192或256
 			//SecureRandom是生成安全随机数序列，password.getBytes()是种子，只要种子相同，序列就一样，所以生成的秘钥就一样。
-			kg.init(128, new SecureRandom(password.getBytes()));
+			kg.init(128, new SecureRandom(password.getBytes(Charsets.UTF_8)));
 			SecretKey sk = kg.generateKey();
 			byte[] b = sk.getEncoded();
 			String s = byteToHexString(b);

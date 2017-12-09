@@ -1,5 +1,6 @@
 package com.xu.spider4j.util;
 
+import com.google.common.base.Charsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -27,7 +28,7 @@ public class JSUtil {
 			Path path = Paths.get("core.js");
 			System.out.println(path.getFileName());
 			byte[] bytes = Files.readAllBytes(path);
-			String js = new String(bytes);
+			String js = new String(bytes, Charsets.UTF_8);
 			ScriptEngineManager factory = new ScriptEngineManager();
 			ScriptEngine engine = factory.getEngineByName("JavaScript");
 			engine.eval(js);

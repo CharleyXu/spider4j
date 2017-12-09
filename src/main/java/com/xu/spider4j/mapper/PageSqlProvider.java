@@ -1,6 +1,7 @@
 package com.xu.spider4j.mapper;
 
 import com.xu.spider4j.entity.PageRequest;
+import com.xu.spider4j.entity.Sort;
 import org.apache.ibatis.jdbc.SQL;
 
 /**
@@ -15,7 +16,7 @@ public  class PageSqlProvider {
 		sql.SELECT("*").FROM(tableName);
 		if(request.getSorts()!=null&&request.getSorts().length!=0){
 			for(int i=0;i<request.getSorts().length;i++){
-				PageRequest.Sort sort = request.getSorts()[i];
+				Sort sort = request.getSorts()[i];
 				sql.ORDER_BY(sort.getField()+" "+sort.getType());
 			}
 		}
